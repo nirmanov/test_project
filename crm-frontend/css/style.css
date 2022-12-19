@@ -259,6 +259,7 @@ td {
 
 .clients__body-tooltip--limit {
   vertical-align: super;
+  top: 1px;
 }
 
 .clients__body-tooltip-limit {

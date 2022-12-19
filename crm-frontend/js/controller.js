@@ -89,15 +89,19 @@ const controlDeleteClient = async function(id) {
 
 }
 
-const showMoreButton = function() {
-  tableView.addHandlerShowButton();
+const showMoreButton = function(showMoreBtn, siblings) {
+  let selectedShowBtn;
+    for (let sibling of siblings) {
+      sibling.classList.remove('invisible');
+  }
+    selectedShowBtn = showMoreBtn;
+    selectedShowBtn.classList.add('hidden');
 }
 
 const init = function() {
   tableView.addHandlerRender(controlClients);
   tableView.addHandlerSortTable(controlSortClients);
   tableView.addHandlerShowButton(showMoreButton);
-
   searchView.addHandlerSearch(controlSearchResults);
   searchView.addHandlerSubmit(controlSearchSubmit);
   addClientView.addHandlerUpload(controlAddClient);

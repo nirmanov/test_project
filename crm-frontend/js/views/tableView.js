@@ -3,8 +3,6 @@ import View from "./View.js";
 class TableView extends View {
   _parentEl = document.querySelector('.clients__table-body');
   _tableHead = document.querySelector('.clients__table-head');
-  // _showAll = document.querySelector('.clients__body-tooltip-limit');
-  // _showAll = showAllBtn;
   _data;
 
   /**
@@ -209,32 +207,16 @@ class TableView extends View {
     })
   }
 
-  addHandlerShowButton() {
-    showAllButton.addEventListener('click', () => {
-      console.log("trying");
-    })
-    // console.log(document.querySelectorAll(".showAllBtn"));
-// document.querySelectorAll(".showAllBtn").addEventListener('click', ()=>{
-//   console.log(document.querySelectorAll(".showAllBtn"));
-// })
-// console.log(document.querySelectorAll(".showAllBtn"));
-    // this._showAllBtn.addEventListener('click', (e) => {
-    //   e.preventDefault();
-    //   this.this._showAllBtn.classList.add('hidden');
-    // });
+  addHandlerShowButton(showMoreButton) {
+    let table = document.querySelector(".clients__table-body");
+    table.onclick = function (event) {
+      let target = event.target.closest('.clients__body-tooltip--limit');
+      let siblings = target.parentNode.querySelectorAll('.invisible');
+      if (!target) return;
+      if (!table.contains(target)) return;
+      showMoreButton(target, siblings);
+    };
   }
-
-  //   showHiddenTooltip() {
-  // console.log('click');
-  //   }
-  // _checkShowAddBtn() {
-  //   const countActiveInputs = this._countActiveInputs();
-  //   if (countActiveInputs >= 10) this._btnAddContact.classList.add('hidden');
-  //   else this._btnAddContact.classList.remove('hidden');
-  // }
-
-
 }
-
 
 export default new TableView();
