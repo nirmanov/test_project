@@ -2,7 +2,6 @@ import View from "./View.js";
 
 class AddClientView extends View {
   _parentEl = document.querySelector('.form-add');
-
   _window = document.querySelector('.modal-add');
   _btnOpen = document.querySelector('.add-client__btn');
   _btnClose = document.querySelector('.form-add__close-modal');

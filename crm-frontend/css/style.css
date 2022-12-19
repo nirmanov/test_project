@@ -273,6 +273,7 @@ td {
   font-weight: 600;
   font-size: 7px;
   line-height: 13px;
+  cursor: pointer;
 }
 
 .clients__body-tooltip:hover svg g,

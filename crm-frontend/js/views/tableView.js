@@ -3,6 +3,8 @@ import View from "./View.js";
 class TableView extends View {
   _parentEl = document.querySelector('.clients__table-body');
   _tableHead = document.querySelector('.clients__table-head');
+  // _showAll = document.querySelector('.clients__body-tooltip-limit');
+  // _showAll = showAllBtn;
   _data;
 
   /**
@@ -17,6 +19,7 @@ class TableView extends View {
     const markup = this._generateMarkup();
     this._clear();
     this._parentEl.insertAdjacentHTML('beforeend', markup);
+    this._showAllBtn = document.querySelector('.clients__body-tooltip-limit');
   }
 
   renderTableSpinner = function () {
@@ -43,10 +46,12 @@ class TableView extends View {
       hour: '2-digit',
       minute: '2-digit'
     };
+    let hidden = '';
+    const showAllBtn = 'showAllBtn'
 
     const generateMarkupVk = function (contact) {
       return `
-        <span class="clients__body-tooltip clients__body-tooltip--vk">
+        <span class="clients__body-tooltip clients__body-tooltip--vk ${hidden}">
           <span class="clients__body-contact clients__body-contact--vk">
             <svg w'id'th="16" height="16" viewbox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g opacity="0.7">
@@ -60,7 +65,7 @@ class TableView extends View {
     };
     const generateMarkupFb = function (contact) {
       return `
-        <span class="clients__body-tooltip clients__body-tooltip--fb">
+        <span class="clients__body-tooltip clients__body-tooltip--fb ${hidden}">
           <span class="clients__body-contact clients__body-contact--fb">
             <svg width="16" height="16" viewbox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g opacity="0.7">
@@ -74,7 +79,7 @@ class TableView extends View {
     }
     const generateMarkupPhone = function (contact) {
       return `
-        <span class="clients__body-tooltip clients__body-tooltip--phone">
+        <span class="clients__body-tooltip clients__body-tooltip--phone ${hidden}">
           <span class="clients__body-contact clients__body-contact--phone">
             <svg width="16" height="16" viewbox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g opacity="0.7">
@@ -89,7 +94,7 @@ class TableView extends View {
     }
     const generateMarkupEmail = function (contact) {
       return `
-        <span class="clients__body-tooltip clients__body-tooltip--mail">
+        <span class="clients__body-tooltip clients__body-tooltip--mail ${hidden}">
           <span class="clients__body-contact clients__body-contact--mail">
             <svg width="16" height="16" viewbox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path opacity="0.7" fill-rule="evenodd" clip-rule="evenodd" d="M8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16ZM4 5.75C4 5.3375 4.36 5 4.8 5H11.2C11.64 5 12 5.3375 12 5.75V10.25C12 10.6625 11.64 11 11.2 11H4.8C4.36 11 4 10.6625 4 10.25V5.75ZM8.424 8.1275L11.04 6.59375C11.14 6.53375 11.2 6.4325 11.2 6.32375C11.2 6.0725 10.908 5.9225 10.68 6.05375L8 7.625L5.32 6.05375C5.092 5.9225 4.8 6.0725 4.8 6.32375C4.8 6.4325 4.86 6.53375 4.96 6.59375L7.576 8.1275C7.836 8.28125 8.164 8.28125 8.424 8.1275Z" fill="#9873FF"/>
@@ -101,7 +106,7 @@ class TableView extends View {
     }
     const generateMarkupOther = function (contact) {
       return `
-        <span class="clients__body-tooltip clients__body-tooltip--other">
+        <span class="clients__body-tooltip clients__body-tooltip--other ${hidden}">
           <span class="clients__body-contact clients__body-contact--other">
             <svg width="16" height="16" viewbox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path opacity="0.7" fill-rule="evenodd" clip-rule="evenodd" d="M8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16ZM3 8C3 5.24 5.24 3 8 3C10.76 3 13 5.24 13 8C13 10.76 10.76 13 8 13C5.24 13 3 10.76 3 8ZM9.5 6C9.5 5.17 8.83 4.5 8 4.5C7.17 4.5 6.5 5.17 6.5 6C6.5 6.83 7.17 7.5 8 7.5C8.83 7.5 9.5 6.83 9.5 6ZM5 9.99C5.645 10.96 6.75 11.6 8 11.6C9.25 11.6 10.355 10.96 11 9.99C10.985 8.995 8.995 8.45 8 8.45C7 8.45 5.015 8.995 5 9.99Z" fill="#9873FF"/>
@@ -116,7 +121,7 @@ class TableView extends View {
       return `
       <span class="clients__body-tooltip clients__body-tooltip--limit">
       <span class="clients__body-contact clients__body-contact--limit">
-        <button aria-label="Показать остальные социальные сети" class="clients__body-tooltip-limit">+${i}</button>                  
+        <button aria-label="Показать остальные социальные сети" class="clients__body-tooltip-limit ${showAllBtn}">+${i}</button>                  
       </span>
       <span class="clients__body-popup">Показать остальные контакты</span>
     </span>
@@ -129,31 +134,24 @@ class TableView extends View {
       const formattedCreationTime = new Date(client.createdAt).toLocaleTimeString('ru-RU', timeOptions);
       const formattedUpdateTime = new Date(client.updatedAt).toLocaleTimeString('ru-RU', timeOptions);
 
-      const contactsHtml = client.contacts.map(contact => {
+      const i = client.contacts.length - 4;
+      let showAllButton = '';
+      let contactsHtml = client.contacts.map((contact, index) => {
+        if (index > 3) {
+          hidden = 'invisible';
+        } else {
+          hidden = '';
+        }
+        if (client.contacts.length > 5) {
+          showAllButton = generateMarkupShowAll(i);
+        }
         if (contact.type === 'Телефон') return generateMarkupPhone(contact);
         if (contact.type === 'Email') return generateMarkupEmail(contact);
         if (contact.type === 'Vk') return generateMarkupVk(contact);
         if (contact.type === 'Facebook') return generateMarkupFb(contact);
         if (contact.type === 'Доп. телефон') return generateMarkupOther(contact);
-        // } 
         return '';
       }).join('');
-
-      const amountClientContacts = client.contacts.length;
-      let contactsAmount = 4;
-      let contactsOpen = contactsAmount;
-      const i = amountClientContacts - contactsOpen;
-      // let amount = amountClientContacts;
-      let showAllButton = '';
-
-      if (amountClientContacts > 5) {
-        console.log(client);
-        for (let i = 5; i <= amountClientContacts; i++) {
-          console.log(i);
-        }
-        showAllButton = generateMarkupShowAll(i);
-
-      }
 
       return `
         <tr class="clients__body-row" data-id="${client.id}">
@@ -210,6 +208,33 @@ class TableView extends View {
       handler(sortingParam);
     })
   }
+
+  addHandlerShowButton() {
+    showAllButton.addEventListener('click', () => {
+      console.log("trying");
+    })
+    // console.log(document.querySelectorAll(".showAllBtn"));
+// document.querySelectorAll(".showAllBtn").addEventListener('click', ()=>{
+//   console.log(document.querySelectorAll(".showAllBtn"));
+// })
+// console.log(document.querySelectorAll(".showAllBtn"));
+    // this._showAllBtn.addEventListener('click', (e) => {
+    //   e.preventDefault();
+    //   this.this._showAllBtn.classList.add('hidden');
+    // });
+  }
+
+  //   showHiddenTooltip() {
+  // console.log('click');
+  //   }
+  // _checkShowAddBtn() {
+  //   const countActiveInputs = this._countActiveInputs();
+  //   if (countActiveInputs >= 10) this._btnAddContact.classList.add('hidden');
+  //   else this._btnAddContact.classList.remove('hidden');
+  // }
+
+
 }
+
 
 export default new TableView();

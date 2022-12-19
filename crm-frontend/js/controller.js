@@ -22,7 +22,6 @@ const controlSortClients = async function(sortingParam) {
 
   // Load data
   await model.loadData(sortingParam);
-  
   // Render results
   tableView.render(model.state.clients);
 }
@@ -52,6 +51,7 @@ const controlAddClient = async function(newClient) {
 
   // Render data
   tableView.render(model.state.clients);
+  
 }
 
 const controlEditClient = async function(id) {
@@ -86,11 +86,18 @@ const controlDeleteClient = async function(id) {
   
   // Render data
   tableView.render(model.state.clients);  
+
+}
+
+const showMoreButton = function() {
+  tableView.addHandlerShowButton();
 }
 
 const init = function() {
   tableView.addHandlerRender(controlClients);
   tableView.addHandlerSortTable(controlSortClients);
+  tableView.addHandlerShowButton(showMoreButton);
+
   searchView.addHandlerSearch(controlSearchResults);
   searchView.addHandlerSubmit(controlSearchSubmit);
   addClientView.addHandlerUpload(controlAddClient);
